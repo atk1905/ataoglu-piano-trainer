@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111827" />
+    <title>Ataoglu Piano Trainer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Ataoglu Piano Trainer</div>
+          <h1>iPad uyumlu Web MIDI piyano antrenörü</h1>
+          <p class="muted">Eğitim modu, 50 parçalık repertuvar, canlı MIDI debug ve puanlama.</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="connectBtn" class="primary">MIDI Bağlan</button>
+          <button id="resetBtn" class="ghost">Sıfırla</button>
+        </div>
+      </header>
+
+      <section class="status-grid">
+        <div class="card status-card">
+          <div class="label">Bağlantı</div>
+          <div id="connectionState" class="value">Bekleniyor</div>
+          <div id="connectionHint" class="hint">Web MIDI izni gerekli.</div>
+        </div>
+        <div class="card status-card">
+          <div class="label">Cihaz</div>
+          <div id="deviceState" class="value">—</div>
+          <div id="deviceHint" class="hint">Bluetooth MIDI cihazı seçilince görünür.</div>
+        </div>
+        <div class="card status-card">
+          <div class="label">Skor</div>
+          <div id="scoreState" class="value">0</div>
+          <div id="scoreHint" class="hint">Doğru +10, yanlış -3, tempo bonusu +2.</div>
+        </div>
+        <div class="card status-card">
+          <div class="label">Doğru / Yanlış</div>
+          <div id="accuracyState" class="value">0 / 0</div>
+          <div id="accuracyHint" class="hint">İlerleme anlık güncellenir.</div>
+        </div>
+      </section>
+
+      <main class="layout">
+        <section class="card main-panel">
+          <div class="modebar">
+            <button class="mode-tab active" data-mode="lesson">Eğitim</button>
+            <button class="mode-tab" data-mode="songs">Parçalar</button>
+            <button class="mode-tab" data-mode="keyboard">Klavye</button>
+            <button class="mode-tab" data-mode="debug">MIDI Debug</button>
+          </div>
+
+          <div class="prompt-row">
+            <div>
+              <div class="label">Sıradaki Nota</div>
+              <div id="targetNote" class="target-note">—</div>
+            </div>
+            <div>
+              <div class="label">Durum</div>
+              <div id="playState" class="play-state">Hazır</div>
+            </div>
+            <div>
+              <div class="label">Aralık</div>
+              <div id="rangeState" class="play-state">C3–C5</div>
+            </div>
+          </div>
+
+          <div class="keyboard-controls">
+            <button id="octaveDown" class="ghost small">◀ Aralık</button>
+            <button id="octaveUp" class="ghost small">Aralık ▶</button>
+            <button id="focusTarget" class="ghost small">Hedefe Git</button>
+          </div>
+
+          <div class="keyboard-wrap">
+            <div id="keyboard" class="keyboard"></div>
+          </div>
+
+          <div id="panel-lesson" class="panel-section active">
+            <div class="section-head">
+              <h2>Eğitim modu</h2>
+              <div class="section-actions">
+                <button id="lessonPrev" class="ghost small">Önceki</button>
+                <button id="lessonNext" class="ghost small">Sonraki</button>
+              </div>
+            </div>
+            <p id="lessonDescription" class="muted"></p>
+            <div class="lesson-grid" id="lessonSteps"></div>
+          </div>
+
+          <div id="panel-songs" class="panel-section">
+            <div class="section-head">
+              <h2>50 parçalık repertuvar</h2>
+              <div class="section-actions">
+                <button id="songPrev" class="ghost small">Önceki</button>
+                <button id="songNext" class="ghost small">Sonraki</button>
+              </div>
+            </div>
+            <p id="songDescription" class="muted"></p>
+            <div id="songList" class="song-list"></div>
+          </div>
+
+          <div id="panel-keyboard" class="panel-section">
+            <div class="section-head"><h2>Klavye görünümü</h2></div>
+            <p class="muted">Ekrana sığabildiği kadar tuş gösterilir; aralık düğmeleriyle kaydırılabilir.</p>
+          </div>
+
+          <div id="panel-debug" class="panel-section">
+            <div class="section-head"><h2>Canlı MIDI sinyalleri</h2></div>
+            <div id="midiLog" class="midi-log"></div>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="card score-panel">
+            <div class="section-head">
+              <h2>Skor panosu</h2>
+            </div>
+            <div class="score-grid">
+              <div><span>Doğru</span><strong id="correctCount">0</strong></div>
+              <div><span>Yanlış</span><strong id="wrongCount">0</strong></div>
+              <div><span>Accuracy</span><strong id="accuracyPct">0%</strong></div>
+              <div><span>Streak</span><strong id="streakCount">0</strong></div>
+            </div>
+            <div class="progress-shell"><div id="progressBar" class="progress-bar"></div></div>
+            <div id="progressText" class="muted">Başlamak için bir mod seç.</div>
+          </section>
+
+          <section class="card info-panel">
+            <div class="section-head"><h2>Bridge notu</h2></div>
+            <p class="muted">iPad Safari Web MIDI desteği sınırlı olabilir. Uygulama secure context altında çalışır; izin verilirse doğrudan MIDI, verilmezse diagnostic görünüm aktif olur.</p>
+            <p class="muted">Verdiğin WebMIDIBrowser sayfası kontrol/diagnostic amaçlı referans alınmıştır.</p>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

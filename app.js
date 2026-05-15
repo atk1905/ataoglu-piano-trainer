@@ -8,6 +8,8 @@ const state = {
   visibleCount: Number(localStorage.getItem('atpt.visibleCount') || 25),
   connected: false,
   midiAccess: null,
+  midiInputs: [],
+  midiOutputs: [],
   activeNotes: new Set(),
   log: [],
   correct: 0,
@@ -45,8 +47,24 @@ function nowStamp() {
 }
 function pushLog(line) {
   state.log.unshift(line);
-  state.log = state.log.slice(0, 20);
+  state.log = state.log.slice(0, 40);
   renderLog();
+}
+function bytesToHex(data) {
+  return [...data].map(byte => byte.toString(16).padStart(2, '0')).join(' ');
+}
+function portLabel(port) {
+  return port?.name || port?.id || 'unknown-port';
+}
+function scanMidiPorts(access) {
+  state.midiInputs = [...access.inputs.values()];
+  state.midiOutputs = [...access.outputs.values()];
+  state.midiInputs.forEach(input => attachInput(input));
+  const inputNames = state.midiInputs.map(portLabel).join(', ') || 'input yok';
+  const outputNames = state.midiOutputs.map(portLabel).join(', ') || 'output yok';
+  el.deviceState.textContent = state.midiInputs[0]?.name || state.midiOutputs[0]?.name || 'Cihaz yok';
+  el.deviceHint.textContent = `Input: ${inputNames} • Output: ${outputNames}`;
+  pushLog({ time: nowStamp(), type: 'SYS', noteName: 'ports', raw: `inputs=[${inputNames}] outputs=[${outputNames}]` });
 }
 function setMode(mode) {
   state.mode = mode;
@@ -145,6 +163,10 @@ function renderLog() {
     </div>
   `).join('') || '<div class="muted">Henüz MIDI mesajı yok.</div>';
 }
+function clearMidiLog() {
+  state.log = [];
+  renderLog();
+}
 function renderKeyboard() {
   const start = state.visibleStart;
   const end = start + state.visibleCount - 1;
@@ -239,6 +261,8 @@ function handleMidiMessage(event) {
   const channel = (status & 0x0f) + 1;
   const note = data1;
   const velocity = data2 || 0;
+  const portName = portLabel(event.currentTarget || event.target || event.port);
+  pushLog({ time: nowStamp(), type: 'RAW', noteName: portName, raw: `port:${portName} ${bytesToHex(event.data)}` });
   if (cmd === 0x90 && velocity > 0) {
     processNote(note, velocity, true);
   } else if (cmd === 0x80 || (cmd === 0x90 && velocity === 0)) {
@@ -258,27 +282,21 @@ async function connectMidi() {
     const access = await navigator.requestMIDIAccess({ sysex: false });
     state.midiAccess = access;
     state.connected = true;
-    const inputs = [...access.inputs.values()];
-    if (!inputs.length) {
-      el.deviceState.textContent = 'Cihaz yok';
-      el.deviceHint.textContent = 'Bluetooth MIDI cihazı bekleniyor.';
-    }
-    inputs.forEach(input => attachInput(input));
+    scanMidiPorts(access);
     access.onstatechange = (e) => {
       const port = e.port;
-      if (port.type === 'input') {
-        if (port.state === 'connected') attachInput(port);
-        el.deviceState.textContent = port.name || 'MIDI cihazı';
-        el.deviceHint.textContent = `${port.manufacturer || 'MIDI'} • ${port.state}`;
-      }
+      pushLog({
+        time: nowStamp(),
+        type: 'STATE',
+        noteName: port.type || 'port',
+        raw: `name:${port.name} connection:${port.connection} state:${port.state}`,
+      });
+      if (port.type === 'input' && port.state === 'connected') attachInput(port);
+      scanMidiPorts(access);
     };
     el.connectionState.textContent = 'Bağlandı';
-    el.connectionHint.textContent = 'Canlı MIDI girişleri etkin.';
-    if (inputs[0]) {
-      el.deviceState.textContent = inputs[0].name || 'MIDI cihazı';
-      el.deviceHint.textContent = `${inputs[0].manufacturer || 'MIDI'} • hazır`;
-    }
-    pushLog({ time: nowStamp(), type: 'SYS', noteName: 'MIDI', raw: 'Access granted' });
+    el.connectionHint.textContent = 'Canlı MIDI girişleri ve output testleri etkin.';
+    pushLog({ time: nowStamp(), type: 'SYS', noteName: 'MIDI', raw: 'Access granted via requestMIDIAccess({ sysex:false })' });
     renderTarget();
   } catch (err) {
     state.connected = false;
@@ -289,6 +307,16 @@ async function connectMidi() {
 }
 function attachInput(input) {
   input.onmidimessage = handleMidiMessage;
+}
+function sendTestNote(on) {
+  if (!state.midiAccess) {
+    pushLog({ time: nowStamp(), type: 'ERR', noteName: 'output', raw: 'Önce MIDI Bağlan düğmesine dokun.' });
+    return;
+  }
+  const message = on ? [0x90, 60, 0x40] : [0x80, 60, 0x00];
+  const outputs = [...state.midiAccess.outputs.values()];
+  outputs.forEach(output => output.send(message, window.performance.now()));
+  pushLog({ time: nowStamp(), type: 'OUT', noteName: 'C3', raw: `${on ? 'noteOn' : 'noteOff'} ${bytesToHex(message)} -> ${outputs.length || 0} output` });
 }
 function resetSession() {
   state.correct = 0;
@@ -312,6 +340,9 @@ function resetSession() {
 function wireUI() {
   el.connectBtn.addEventListener('click', connectMidi);
   el.resetBtn.addEventListener('click', resetSession);
+  el.clearLogBtn.addEventListener('click', clearMidiLog);
+  el.testNoteOnBtn.addEventListener('click', () => sendTestNote(true));
+  el.testNoteOffBtn.addEventListener('click', () => sendTestNote(false));
   el.octaveDown.addEventListener('click', () => setRange(-12));
   el.octaveUp.addEventListener('click', () => setRange(12));
   el.focusTarget.addEventListener('click', goToTarget);
@@ -354,6 +385,9 @@ function init() {
   el.lessonNext = $('lessonNext');
   el.songPrev = $('songPrev');
   el.songNext = $('songNext');
+  el.clearLogBtn = $('clearLogBtn');
+  el.testNoteOnBtn = $('testNoteOnBtn');
+  el.testNoteOffBtn = $('testNoteOffBtn');
   wireUI();
   setMode(state.mode);
   renderLesson();

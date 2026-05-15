@@ -108,7 +108,15 @@
           </div>
 
           <div id="panel-debug" class="panel-section">
-            <div class="section-head"><h2>Canlı MIDI sinyalleri</h2></div>
+            <div class="section-head">
+              <h2>Canlı MIDI sinyalleri</h2>
+              <div class="section-actions">
+                <button id="clearLogBtn" class="ghost small">Log Temizle</button>
+                <button id="testNoteOnBtn" class="ghost small">C3 Note On</button>
+                <button id="testNoteOffBtn" class="ghost small">C3 Note Off</button>
+              </div>
+            </div>
+            <p class="muted">Google Drive’daki WebMIDIBrowser kodundaki bağlantı mantığı kullanılır: requestMIDIAccess({ sysex:false }), input/output port tarama, onmidimessage ve onstatechange dinleme.</p>
             <div id="midiLog" class="midi-log"></div>
           </div>
         </section>
@@ -130,8 +138,8 @@
 
           <section class="card info-panel">
             <div class="section-head"><h2>Bridge notu</h2></div>
-            <p class="muted">iPad Safari Web MIDI desteği sınırlı olabilir. Uygulama secure context altında çalışır; izin verilirse doğrudan MIDI, verilmezse diagnostic görünüm aktif olur.</p>
-            <p class="muted">Verdiğin WebMIDIBrowser sayfası kontrol/diagnostic amaçlı referans alınmıştır.</p>
+            <p class="muted">iPad Safari Web MIDI desteği sınırlı olabilir. Bluetooth MIDI için Web MIDI destekleyen bir tarayıcı/bridge gerekebilir. Uygulama secure context altında çalışır; izin verilirse doğrudan MIDI, verilmezse diagnostic görünüm aktif olur.</p>
+            <p class="muted">Verdiğin WebMIDIBrowser sayfasından port tarama, canlı hex log, statechange ve C3 output test özellikleri trainer içine taşındı.</p>
           </section>
         </aside>
       </main>

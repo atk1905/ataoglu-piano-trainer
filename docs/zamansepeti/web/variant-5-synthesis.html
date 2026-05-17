@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZamanSepeti | Synthesized Best-of Landing Page</title>
+  <meta name="description" content="ChatGPT, Claude, Gemini ve Kanki varyantlarının güçlü yanlarını birleştiren ZamanSepeti landing page." />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(12, 18, 33, 0.82);
+      --panel-soft: rgba(255,255,255,.05);
+      --text: #f7f8fc;
+      --muted: rgba(247, 248, 252, .72);
+      --line: rgba(255,255,255,.10);
+      --accent: #4f46e5;
+      --accent-2: #0f766e;
+      --accent-3: #f97316;
+      --shadow: 0 28px 80px rgba(0,0,0,.34);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 28%, transparent), transparent 28%),
+        radial-gradient(circle at 85% 8%, color-mix(in srgb, var(--accent-2) 24%, transparent), transparent 26%),
+        radial-gradient(circle at 62% 88%, color-mix(in srgb, var(--accent-3) 16%, transparent), transparent 28%),
+        linear-gradient(180deg, #08101d 0%, #0a1220 45%, #0b1020 100%);
+      min-height: 100vh;
+    }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .topbar {
+      display:flex; align-items:center; justify-content:space-between; gap: 16px;
+      padding: 20px 0 10px; position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px);
+    }
+    .brand { display:flex; align-items:center; gap: 12px; font-weight: 800; letter-spacing: -.02em; }
+    .mark { width: 40px; height: 40px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: var(--shadow); }
+    .pill {
+      padding: 10px 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.04); color: var(--muted); font-size: 14px;
+    }
+    .hero { padding: 28px 0 18px; }
+    .hero-grid { display:grid; grid-template-columns: 1.15fr .85fr; gap: 18px; align-items: stretch; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow); }
+    .hero-main { padding: 34px; position: relative; overflow: hidden; }
+    .hero-main::after {
+      content: ''; position:absolute; inset:auto -16% -24% auto; width: 320px; height: 320px;
+      border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 34%, transparent) 0%, transparent 70%);
+      filter: blur(12px); pointer-events:none;
+    }
+    .badge {
+      display:inline-flex; align-items:center; gap: 8px; padding: 10px 14px; border-radius: 999px;
+      background: rgba(255,255,255,.06); border: 1px solid var(--line); color: var(--muted); font-size: 14px;
+    }
+    h1 {
+      margin: 18px 0 14px;
+      max-width: 12ch;
+      font-size: clamp(44px, 6vw, 78px);
+      line-height: .94;
+      letter-spacing: -0.06em;
+    }
+    .sub {
+      margin: 0 0 24px;
+      max-width: 60ch;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.75;
+    }
+    .cta-row { display:flex; flex-wrap:wrap; gap: 12px; margin: 18px 0 24px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      text-decoration:none; font-weight: 700; border-radius: 16px; padding: 14px 18px;
+      border: 1px solid transparent; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.primary { color:#fff; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 16px 34px rgba(79,70,229,.22); }
+    .btn.secondary { color: var(--text); background: rgba(255,255,255,.04); border-color: var(--line); }
+    .proof-row { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .proof {
+      padding: 16px; border-radius: 20px; border: 1px solid var(--line); background: rgba(255,255,255,.04);
+    }
+    .proof strong { display:block; font-size: 28px; line-height:1; margin-bottom: 6px; }
+    .proof span { color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .stack { display:grid; gap: 14px; }
+    .side-card { padding: 22px; }
+    .side-card h3 { margin: 0 0 10px; font-size: 18px; }
+    .side-card p, .side-card li { color: var(--muted); line-height: 1.65; }
+    .chip-grid { display:flex; flex-wrap:wrap; gap: 10px; }
+    .chip { padding: 10px 13px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.05); font-size: 14px; }
+    .section { padding: 16px 0; }
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+    .lead { margin: 0 0 18px; color: var(--muted); font-size: 17px; line-height: 1.75; max-width: 68ch; }
+    .grid-3 { display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .grid-2 { display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .feature {
+      padding: 18px; border-radius: 22px; border: 1px solid var(--line); background: rgba(255,255,255,.04);
+    }
+    .feature b { display:block; margin-bottom: 8px; font-size: 17px; }
+    .feature span { color: var(--muted); line-height: 1.65; }
+    .number {
+      display:inline-flex; align-items:center; justify-content:center; width: 34px; height: 34px;
+      border-radius: 12px; margin-bottom: 12px; font-weight: 800; color: #08101e;
+      background: linear-gradient(135deg, #fff, color-mix(in srgb, var(--accent-3) 34%, #fff));
+    }
+    .quote {
+      padding: 18px; border-radius: 22px; border: 1px solid var(--line);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-2) 18%, transparent), color-mix(in srgb, var(--accent) 16%, transparent));
+    }
+    .footer-cta {
+      margin: 26px 0 42px;
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 40%, #12192e), color-mix(in srgb, var(--accent-2) 30%, #111827));
+      border: 1px solid rgba(255,255,255,.12);
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .footer-cta strong { font-size: clamp(24px, 3vw, 34px); }
+    .footer-cta span { color: rgba(255,255,255,.78); display:block; margin-top: 6px; line-height: 1.6; }
+    footer { padding: 4px 0 40px; color: rgba(255,255,255,.56); font-size: 14px; }
+    @media (max-width: 940px) {
+      .hero-grid, .grid-3, .grid-2, .proof-row { grid-template-columns: 1fr; }
+      h1 { max-width: 100%; }
+      .hero-main { padding: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="top">
+    <div class="topbar">
+      <div class="brand"><div class="mark"></div><div>ZamanSepeti</div></div>
+      <div class="pill">Varyant 5 · tüm sonuçların sentezi</div>
+    </div>
+
+    <main class="hero">
+      <div class="hero-grid">
+        <section class="card hero-main">
+          <div class="badge">✨ En güçlü yönler: net teklif akışı, güven sinyalleri, güçlü CTA ve premium his.</div>
+          <h1>Zamanı olmayanlar için işi güvenle çöz.</h1>
+          <p class="sub">Bu sürüm, önceki tüm varyantların en iyi parçalarını birleştirir: modern ve akıcı dil, editorial denge, güçlü dönüşüm odaklı yapı ve premium karanlık estetik. Sonuç; hızlı anlaşılır, güven veren ve mobilde güçlü çalışan bir landing page.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="#how">İlan oluştur</a>
+            <a class="btn secondary" href="#why">Neden farklı?</a>
+          </div>
+          <div class="proof-row">
+            <div class="proof"><strong>7 gün</strong><span>ilanlar sıcak kalır, karar hızlanır</span></div>
+            <div class="proof"><strong>1 akış</strong><span>ilan → teklif → seçim → ilerle</span></div>
+            <div class="proof"><strong>yüksek güven</strong><span>profil, yorum ve geçmiş görünür</span></div>
+          </div>
+        </section>
+
+        <aside class="stack">
+          <div class="card side-card">
+            <h3>Hedef iş kategorileri</h3>
+            <div class="chip-grid">
+              <span class="chip">Ev yardımı</span>
+              <span class="chip">Kurye</span>
+              <span class="chip">Montaj</span>
+              <span class="chip">Organizasyon</span>
+              <span class="chip">Dijital destek</span>
+              <span class="chip">Danışmanlık</span>
+            </div>
+          </div>
+          <div class="card side-card quote">
+            <h3>Ürün kararı</h3>
+            <p>İlk sürümde ödeme akışını site dışında bırak; odağı eşleştirme, teklif toplama ve güven mekanizmasına ver.</p>
+          </div>
+          <div class="card side-card">
+            <h3>Tek cümlelik değer önerisi</h3>
+            <p>"Yapacak işin var ama zamanın yoksa, ZamanSepeti ile kısa sürede doğru kişiyi bul."</p>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <section class="section" id="how">
+      <h2>Çalışma modeli</h2>
+      <p class="lead">Kullanıcıyı yormayan, hızlı ve anlaşılır bir marketplace kurgusu. Gereksiz adım yok; karar, sinyal ve güven var.</p>
+      <div class="grid-3">
+        <div class="feature"><div class="number">1</div><b>İhtiyacı açık yaz</b><span>İş türünü, zamanını ve beklentiyi kısa formatta paylaş.</span></div>
+        <div class="feature"><div class="number">2</div><b>Teklifleri incele</b><span>Uygun adayları hız, puan ve deneyimle birlikte gör.</span></div>
+        <div class="feature"><div class="number">3</div><b>Güvenle seç</b><span>Doğru kişiyi seçip işi hızlıca başlat.</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <h2>Neden bu sentez daha güçlü?</h2>
+      <p class="lead">Bu sayfa, her varyantın güçlü yanını taşıyor: bazen güçlü ilk izlenim, bazen editorial düzen, bazen de net dönüşüm mantığı.</p>
+      <div class="grid-2">
+        <div class="feature"><b>ChatGPT’den</b><span>Akıcı anlatım ve dengeli modern layout.</span></div>
+        <div class="feature"><b>Claude’dan</b><span>Yapısal açıklık ve profesyonel editorial ton.</span></div>
+        <div class="feature"><b>Gemini’den</b><span>Net fayda anlatımı ve kategori temelli düşünme.</span></div>
+        <div class="feature"><b>Kanki’den</b><span>Premium his, güçlü CTA ve güven veren görsel ağırlık.</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Güven katmanı</h2>
+      <p class="lead">Pazaryerinin kalbi güven olduğu için, profiller ve geçmiş iş izleri görünür kalmalı; kullanıcı neye tıkladığını anlamalı.</p>
+      <div class="grid-2">
+        <div class="feature"><b>Doğrulama ve görünürlük</b><span>Profil doğrulama sinyali, tekliflerin neden güvenilir olduğunu anlatır.</span></div>
+        <div class="feature"><b>Tekrar çalışma oranı</b><span>İyi performans gösteren uzmanların öne çıkması pazarın kalitesini artırır.</span></div>
+        <div class="feature"><b>7 günlük ilan penceresi</b><span>Karar yorgunluğunu azaltır ve ilanları güncel tutar.</span></div>
+        <div class="feature"><b>MVP odağı</b><span>Ödeme sonraya, eşleştirme ve güven önce.</span></div>
+      </div>
+    </section>
+
+    <section class="footer-cta" id="cta">
+      <div>
+        <strong>Zamanı olan değil, doğru çözümü bulan kazanır.</strong>
+        <span>Sentezlenmiş bu varyantla ZamanSepeti’ni tek cümlede anlaşılır, güvenilir ve premium bir ürün gibi göster.</span>
+      </div>
+      <div class="cta-row" style="margin:0;">
+        <a class="btn primary" href="#top">Ürüne dön</a>
+        <a class="btn secondary" href="#why">Sentezi gör</a>
+      </div>
+    </section>
+
+    <footer>Varyant 5 · önceki sonuçların en güçlü yanlarından sentezlenmiş landing page</footer>
+  </div>
+</body>
+</html>
+

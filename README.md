@@ -1,23 +1,43 @@
-# ZamanSepeti Prompt Paketi
+# Ataoglu Piano Trainer
 
-Bu klasör, ZamanSepeti.org için oluşturulmuş dört alternatif strateji varyantı, nihai sentez ve web sayfası varyantlarını içerir.
+iPad uyumlu, Web MIDI tabanlı piyano antrenörü.
 
-## Strateji dosyaları
-- `variant-1-chatgpt.md` — ürün stratejisi ve MVP odağı
-- `variant-2-claude.md` — sistem mimarisi ve veri modeli odağı
-- `variant-3-gemini.md` — farklılaşma ve fikir üretimi odağı
-- `variant-4-kanki.md` — pratik, kısa ve uygulanabilir MVP odağı
-- `final-synthesis.md` — son birleşik prompt
+Özellikler:
+- Eğitim modu
+- 50 parçalık repertuvar
+- Canlı MIDI debug paneli
+- Doğru / yanlış sayacı
+- Puan sistemi
+- Adaptive keyboard window
+- localStorage ile son durum saklama
 
-## Web sayfası varyantları
-- `web/variant-1-chatgpt.html` — ChatGPT temalı landing page
-- `web/variant-2-claude.html` — Claude temalı editorial landing page
-- `web/variant-3-gemini.html` — Gemini temalı conversion landing page
-- `web/variant-4-kanki.html` — Kanki temalı premium dark landing page
-- `web/index.html` — tüm varyantları listeleyen mini giriş sayfası
+## Çalıştırma
 
-## Kullanım
-1. Varyantları oku.
-2. Final sentezi Lovable'a yapıştır.
-3. Web varyantlarını ayrı ayrı incele.
-4. Gerekirse platform varyantlarını ayrı ayrı test et.
+```bash
+cd /home/kankios/ataoglu-piano-trainer
+python3 -m http.server 4173
+```
+
+Sonra tarayıcıda aç:
+
+```text
+http://localhost:4173
+```
+
+Notlar:
+- Web MIDI secure context ister. `localhost` bu yüzden uygundur.
+- iPad Safari Web MIDI desteği sınırlı olabilir; uygulama bu durumda diagnostic görünümde yine açılır.
+- Repertuvar içeriği öğretici kısa motiflerden oluşur; tam konser düzenleri değildir.
+
+## Proje yapısı
+
+- `index.html` — tek sayfa arayüz
+- `styles.css` — responsive görünüm
+- `app.js` — MIDI, eğitim, skor ve UI akışı
+- `data.js` — nota eşlemesi, eğitim adımları, 50 parça verisi
+
+## Devam etmek için
+
+- GitHub repo oluştur
+- GitHub Pages ile yayınla
+- Public URL'yi e-posta ile paylaş
